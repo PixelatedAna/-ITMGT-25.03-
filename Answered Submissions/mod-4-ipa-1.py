@@ -98,107 +98,47 @@ def tic_tac_toe(board):
     
     #INPUT board
     
-    list_of_winners = []
-
     #GET the unique symbol of the board
     unique_characters = list(set(i for j in board for i in j))
+    
+    #REMOVE " " str
+    unique_characters = list(filter(None, unique_characters))
 
-    #CHECK if HORIZONTALS are all the same
-    for symbol in unique_characters:
-        hori_per_symbol = []
+    #GET win conditions for each symbol
+    one = unique_characters[0]
+    one_win = [one]*len(board)
+    
+    two = unique_characters[1]
+    two_win = [two]*len(board)
 
-        for row in board:
-            hori_per_row = []
+    #GET list of HORIZONTALS
+    horizon = []
+    for i in board:
+        horizon += [i]
 
-            for board_input in row:
-                bool_hori = [board_input == symbol]
-                hori_per_row += bool_hori
-
-            hori_per_symbol += [hori_per_row]
-
-        score = [sum(x) for x in hori_per_symbol]
-
-        if len(board[1]) in score:
-            return symbol
-            list_of_winners += symbol
-
-        else:
-            list_of_winners = list_of_winners
-
-    #CHECK if VERTICALS are the same
+    #GET list of VERTICALS
     vertboard = [x for x in zip(*board)]
+    vert = []
+    for i in vertboard:
+        i = list(i)
+        vert += [i]
 
-    for symbol in unique_characters:
-        vert_per_symbol = []
+    #GET list of DIAGONAL TOP(L) to DOWN(R)
+    dtldr = [[board[i][i] for i,v in enumerate(board)]]
 
-        for column in vertboard:
-            vert_per_column = []
+    #GET list of DIAGONAL TOP(R) to DOWN(L)
+    dtrdl = [[board[i][len(board)-1-i] for i,v in enumerate(board)]]
 
-            for board_input in column:
-                bool_vert = [board_input == symbol]
-                vert_per_column += bool_vert
-
-            vert_per_symbol += [vert_per_column]
-
-        score = [sum(x) for x in vert_per_symbol]
-
-        if len(board[1]) in score:
-            return symbol
-            list_of_winners += symbol
-
-        else:
-            list_of_winners = list_of_winners
-
-    #CHECK if DIAGONAL TOP(L) to DOWN(R) are the same
-    for symbol in unique_characters:
-        diaTLDR_per_symbol = []
-
-        for line in board:
-            diaTLDR_per_line = []
-
-            for board_input in line:
-                bool_diaTLDR = [board_input == symbol]
-                diaTLDR_per_line += bool_diaTLDR
-
-            diaTLDR_per_symbol += [diaTLDR_per_line]
-
-        score = sum([diaTLDR_per_symbol[i][i] for i,v in enumerate(diaTLDR_per_symbol)])
-
-        if len(board[1]) == score:
-            return symbol
-            list_of_winners += symbol
-
-        else:
-            list_of_winners = list_of_winners
-
-    #CHECK if DIAGONAL TOP(R) to DOWN(L) are the same
-    for symbol in unique_characters:
-        diaTRDL_per_symbol = []
-
-        for line in board:
-            diaTRDL_per_line = []
-
-            for board_input in line:
-                bool_diaTRDL = [board_input == symbol]
-                diaTRDL_per_line += bool_diaTRDL
-
-            diaTRDL_per_symbol += [diaTRDL_per_line]
-
-        score = sum([diaTRDL_per_symbol[2-i][i] for i,v in enumerate(diaTRDL_per_symbol)])
-
-        if len(board[1]) == score:
-            return symbol
-            list_of_winners += symbol
-
-        else:
-            list_of_winners = list_of_winners
-
-    #IF No Ouputs, "NO WINNER"
-    if list_of_winners == []:
-        return "NO WINNER"
-
+    #COMBINE all for comparison
+    compare = horizon + vert + dtldr + dtrdl
+    
+    #CONDITION if win condition is present in list of all
+    if one_win in compare:
+        return str(one)
+    elif two_win in compare:
+        return str(two)
     else:
-        list_of_winners = list_of_winners
+        return "NO WINNER"
 
 def eta(first_stop, second_stop, route_map):
     '''ETA. 
