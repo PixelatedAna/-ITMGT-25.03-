@@ -233,7 +233,10 @@ def scytale_cipher(message, shift):
             character_position = character_position + 1 #ADD 1 to character position to go to next column
 
     else: #ELSE
-        message = message + "_" #ADD "_" to message
+        
+        while (len(message)%shift) != 0:
+            message = message + ("_") #ADD "_" to message
+        
         #COPY if code
         row_length = len(message)//shift 
         character_position = 0
